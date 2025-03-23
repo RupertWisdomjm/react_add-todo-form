@@ -1,4 +1,3 @@
-import { title } from 'process';
 import { TodoInfoProps } from '../../types/types';
 import { TodoInfo } from '../TodoInfo';
 

@@ -29,8 +29,9 @@ export const App = () => {
   const onChangeUser = (newValue: string) => {
     setSelectUser(newValue);
   };
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
     // Validate title
     setIsTitleInvalid(title.trim() === '');
@@ -40,8 +41,11 @@ export const App = () => {
       return;
     }
 
-    const user = usersFromServer.find(u => u.id === Number(selectUser));
-    if (!user) return;
+    const user = usersFromServer.find(user => user.id === Number(selectUser));
+
+    if (!user) {
+      return;
+    }
 
     // Create new todo
     const newTodo: TodoInfoProps = {
@@ -59,6 +63,7 @@ export const App = () => {
     setTitle('');
     setSelectUser('0');
   };
+
   return (
     <div className="App">
       <h1>Add todo form</h1>
@@ -74,8 +79,8 @@ export const App = () => {
             data-cy="titleInput"
             value={title}
             placeholder="Enter a title"
-            onChange={e => {
-              onChange(e.target.value);
+            onChange={event => {
+              onChange(event.target.value);
               setIsTitleInvalid(false);
             }}
           />
@@ -88,8 +93,8 @@ export const App = () => {
           <select
             data-cy="userSelect"
             value={selectUser}
-            onChange={e => {
-              onChangeUser(e.target.value);
+            onChange={event => {
+              onChangeUser(event.target.value);
               setIsUserInvalid(false);
             }}
           >
