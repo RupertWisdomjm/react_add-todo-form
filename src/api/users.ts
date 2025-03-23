@@ -59,4 +59,5 @@ export default [
     username: 'Moriah.Stanton',
     email: 'Rey.Padberg@karina.biz',
   },
+
 ];
