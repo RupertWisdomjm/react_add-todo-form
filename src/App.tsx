@@ -6,13 +6,29 @@ import { useState } from 'react';
 import { TodoList } from './components/TodoList';
 import { TodoInfoProps } from './types/types';
 
+type Todo = {
+  id: number;
+  title: string;
+  completed: boolean;
+  userId: number;
+};
+
+type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+};
+
 export const App = () => {
   // State for todos
-  const [todos, setTodos] = useState<TodoInfoProps[]>(() =>
-    todosFromServer.map(todo => ({
-      ...todo,
-      user: usersFromServer.find(user => user.id === todo.userId)!,
-    })),
+  const [todos, setTodos] = useState<TodoInfoProps[]>(
+    todosFromServer
+      .filter(todo => usersFromServer.some(user => user.id === todo.userId)) // ✅ Keep only todos with existing users
+      .map(todo => ({
+        ...todo,
+        user: usersFromServer.find(user => user.id === todo.userId)!, // `!` asserts that user exists
+      })),
   );
 
   // State
@@ -41,14 +57,14 @@ export const App = () => {
       return;
     }
 
-    const user = usersFromServer.find(user => user.id === Number(selectUser));
+    const user = usersFromServer.find(u => u.id === Number(selectUser));
 
     if (!user) {
       return;
     }
 
     // Create new todo
-    const newTodo: TodoInfoProps = {
+    const newTodo = {
       id: Math.max(...todos.map(todo => todo.id), 0) + 1,
       title,
       completed: false,
